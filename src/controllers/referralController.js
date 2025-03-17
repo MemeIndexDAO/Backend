@@ -99,3 +99,24 @@ exports.getReferredUsers = async (req, res) => {
     }
 }; 
 
+exports.getReferralLink = async (req, res) => {
+    try {
+        const { address } = req.params;
+        
+        const user = await User.findOne({ address });
+        if (!user) {
+            return res.status(404).json({ message: 'User not found' });
+        }
+
+        // Generate bot link with referral code
+        const botLink = `https://t.me/${process.env.BOT_USERNAME}?start=${user.referralCode}`;
+
+        res.json({
+            referralCode: user.referralCode,
+            referralLink: botLink
+        });
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+}; 
+

@@ -21,5 +21,6 @@ router.post('/referral/apply', referralController.applyReferralCode);
 router.get('/referral/stats/:address', referralController.getReferralStats);
 router.get('/referral/leaderboard', referralController.getReferralLeaderboard);
 router.get('/referral/referred-users/:address', referralController.getReferredUsers);
+router.get('/referral/link/:address', referralController.getReferralLink);
 
 module.exports = router; 
