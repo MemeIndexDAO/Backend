@@ -34,7 +34,11 @@ exports.vote = async (req, res) => {
             return res.status(404).json({ message: 'Coin not found' });
         }
 
-        const vote = new Vote({ userAddress, coinAddress, amount });
+        const vote = new Vote({ 
+            userId: userAddress, // Using TON address instead of telegramId
+            coinAddress, 
+            amount 
+        });
         await vote.save();
 
         user.votesBalance -= amount;

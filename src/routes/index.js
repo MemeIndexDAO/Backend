@@ -3,6 +3,7 @@ const router = express.Router();
 const userController = require('../controllers/userController');
 const coinController = require('../controllers/coinController');
 const taskController = require('../controllers/taskController');
+const referralController = require('../controllers/referralController');
 
 // User routes
 router.post('/user/register', userController.registerUser);
@@ -14,5 +15,11 @@ router.post('/coin/vote', coinController.vote);
 
 // Task routes
 router.post('/task/complete', taskController.completeTask);
+
+// Referral routes
+router.post('/referral/apply', referralController.applyReferralCode);
+router.get('/referral/stats/:address', referralController.getReferralStats);
+router.get('/referral/leaderboard', referralController.getReferralLeaderboard);
+router.get('/referral/referred-users/:address', referralController.getReferredUsers);
 
 module.exports = router; 

@@ -1,8 +1,11 @@
 const User = require('../models/User');
 
+const REFERRAL_REWARD = 5; 
+const REFEREE_REWARD = 2; 
+
 exports.registerUser = async (req, res) => {
     try {
-        const { address, username } = req.body;
+        const { address, username, referralCode } = req.body;
         
         let user = await User.findOne({ address });
         if (user) {
@@ -12,7 +15,30 @@ exports.registerUser = async (req, res) => {
         user = new User({ address, username });
         await user.save();
 
-        res.status(201).json({ message: 'User registered successfully', user });
+        // Handle referral if code provided
+        if (referralCode) {
+            const referrer = await User.findOne({ referralCode });
+            if (referrer && referrer.address !== address) {
+                user.referredBy = referrer.address;
+                user.votesBalance += REFEREE_REWARD;
+                
+                referrer.referralCount += 1;
+                referrer.votesBalance += REFERRAL_REWARD;
+                referrer.referralRewardsEarned += REFERRAL_REWARD;
+                
+                await Promise.all([user.save(), referrer.save()]);
+            }
+        }
+
+        res.status(201).json({
+            message: 'User registered successfully',
+            user: {
+                address: user.address,
+                username: user.username,
+                referralCode: user.referralCode,
+                votesBalance: user.votesBalance
+            }
+        });
     } catch (error) {
         res.status(500).json({ message: error.message });
     }
