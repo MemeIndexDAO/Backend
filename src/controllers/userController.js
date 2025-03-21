@@ -9,7 +9,15 @@ exports.registerUser = async (req, res) => {
         
         let user = await User.findOne({ address });
         if (user) {
-            return res.status(400).json({ message: 'User already registered' });
+            return res.status(200).json({
+                message: 'User already exists',
+                user: {
+                    address: user.address,
+                    username: user.username,
+                    referralCode: user.referralCode,
+                    votesBalance: user.votesBalance
+                }
+            });
         }
 
         user = new User({ address, username });
