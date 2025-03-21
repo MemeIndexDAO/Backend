@@ -109,11 +109,13 @@ exports.getReferralLink = async (req, res) => {
         }
 
         // Generate bot link with referral code
-        const botLink = `https://t.me/${process.env.BOT_USERNAME}?start=${user.referralCode}`;
+        const botUsername = process.env.BOT_USERNAME;
+        const botLink = `https://t.me/${botUsername}?start=${user.referralCode}`;
 
         res.json({
             referralCode: user.referralCode,
-            referralLink: botLink
+            referralLink: botLink,
+            botUsername: botUsername
         });
     } catch (error) {
         res.status(500).json({ message: error.message });
