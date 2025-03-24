@@ -9,7 +9,7 @@ const referralController = require('../controllers/referralController');
 router.post('/user/register', userController.registerUser);
 router.post('/user/daily-reward', userController.claimDailyReward);
 router.get('/user/registered-users', userController.getRegisteredUsers);
-router.post('/user/is-registered', userController.isRegistered);
+router.get('/user/is-registered/:address', userController.isRegistered);
 
 // Coin routes
 router.post('/coin/register', coinController.registerCoin);
