@@ -9,6 +9,7 @@ const userSchema = new mongoose.Schema({
     referredBy: { type: String }, // This will store referrer's TON address
     referralCount: { type: Number, default: 0 },
     referralRewardsEarned: { type: Number, default: 0 },
+    prePreparedMessageId: { type: String,required:true},
     completedTasks: [{
         taskId: { type: mongoose.Schema.Types.ObjectId, ref: 'Task' },
         completedAt: { type: Date, default: Date.now }

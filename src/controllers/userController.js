@@ -24,7 +24,7 @@ exports.isRegistered = async (req, res) => {
 
 exports.registerUser = async (req, res) => {
     try {
-        const { address, username, referralCode } = req.body;
+        const { address, username, referralCode, prePreparedMessageId } = req.body;
         
         let user = await User.findOne({ address });
         if (user) {
@@ -39,7 +39,7 @@ exports.registerUser = async (req, res) => {
             });
         }
 
-        user = new User({ address, username });
+        user = new User({ address, username, prePreparedMessageId });
         await user.save();
 
         // Handle referral if code provided
