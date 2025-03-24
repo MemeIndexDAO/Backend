@@ -3,6 +3,25 @@ const User = require('../models/User');
 const REFERRAL_REWARD = 5; 
 const REFEREE_REWARD = 2; 
 
+exports.getRegisteredUsers = async (req, res) => {
+    try {
+        const users = await User.find();    
+        res.status(200).json(users);
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+};
+
+exports.isRegistered = async (req, res) => {
+    try {
+        const { address } = req.body;
+        const user = await User.findOne({ address });
+        res.status(200).json({ isRegistered: !!user });
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+};
+
 exports.registerUser = async (req, res) => {
     try {
         const { address, username, referralCode } = req.body;
