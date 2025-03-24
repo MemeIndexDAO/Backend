@@ -14,7 +14,7 @@ exports.getRegisteredUsers = async (req, res) => {
 
 exports.isRegistered = async (req, res) => {
     try {
-        const { address } = req.body;
+        const address = req.params.address;
         const user = await User.findOne({ address });
         res.status(200).json({ isRegistered: !!user });
     } catch (error) {
