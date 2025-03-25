@@ -34,7 +34,8 @@ exports.registerUser = async (req, res) => {
                     address: user.address,
                     username: user.username,
                     referralCode: user.referralCode,
-                    votesBalance: user.votesBalance
+                    votesBalance: user.votesBalance,
+                    prePreparedMessageId:user.prePreparedMessageId
                 }
             });
         }
