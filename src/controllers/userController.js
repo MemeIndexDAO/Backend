@@ -14,7 +14,7 @@ exports.getRegisteredUsers = async (req, res) => {
 
 exports.getPrePreparedMessageId = async (req, res) => {
     try {
-        const { address } = req.body;
+        const { address } = req.params;
         const user = await User.findOne({ address });
         res.status(200).json({ prePreparedMessageId: user.prePreparedMessageId });  
     } catch (error) {
