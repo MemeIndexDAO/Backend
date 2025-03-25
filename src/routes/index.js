@@ -10,7 +10,7 @@ router.post('/user/register', userController.registerUser);
 router.post('/user/daily-reward', userController.claimDailyReward);
 router.get('/user/registered-users', userController.getRegisteredUsers);
 router.get('/user/is-registered/:address', userController.isRegistered);
-
+router.get('/user/getmessageid', userController.getPrePreparedMessageId);
 // Coin routes
 router.post('/coin/register', coinController.registerCoin);
 router.post('/coin/vote', coinController.vote);
