@@ -36,7 +36,7 @@ exports.isRegistered = async (req, res) => {
 
 exports.registerUser = async (req, res) => {
     try {
-        const { address, username, referralCode, prePreparedMessageId } = req.body;
+        const { address, username, referralCode, referredBy, prePreparedMessageId } = req.body;
         
         let user = await User.findOne({ address });
         if (user) {
@@ -47,17 +47,18 @@ exports.registerUser = async (req, res) => {
                     username: user.username,
                     referralCode: user.referralCode,
                     votesBalance: user.votesBalance,
-                    prePreparedMessageId:user.prePreparedMessageId
+                    prePreparedMessageId:user.prePreparedMessageId,
+                    referredBy:user.referredBy
                 }
             });
         }
 
-        user = new User({ address, username, prePreparedMessageId });
+        user = new User({ address,referralCode, username, prePreparedMessageId, referredBy });
         await user.save();
 
         // Handle referral if code provided
-        if (referralCode) {
-            const referrer = await User.findOne({ referralCode });
+        if (referredBy) {
+            const referrer = await User.findOne({ referredBy });
             if (referrer && referrer.address !== address) {
                 user.referredBy = referrer.address;
                 user.votesBalance += REFEREE_REWARD;
