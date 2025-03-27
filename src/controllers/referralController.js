@@ -35,7 +35,7 @@ exports.applyReferralCode = async (req, res) => {
         user.votesBalance += REFEREE_REWARD;
         await user.save();
 
-        res.json({
+        res.status(200).json({
             message: 'Referral code applied successfully',
             rewardEarned: REFEREE_REWARD,
             newBalance: user.votesBalance
