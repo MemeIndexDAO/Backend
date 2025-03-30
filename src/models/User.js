@@ -1,15 +1,14 @@
 const mongoose = require('mongoose');
 
 const userSchema = new mongoose.Schema({
-    address: { type: String, required: true, unique: true }, // TON wallet address
+    telegramId: { type: String, required: true, unique: true }, // Primary identifier
     username: { type: String, required: true },
     votesBalance: { type: Number, default: 0 },
     lastDailyReward: { type: Date },
     referralCode: { type: String, unique: true },
-    referredBy: { type: String }, // This will store referrer's TON address
+    referredBy: { type: String }, // This will store referrer's telegramId
     referralCount: { type: Number, default: 0 },
     referralRewardsEarned: { type: Number, default: 0 },
-    prePreparedMessageId: { type: String,required:true},
     completedTasks: [{
         taskId: { type: mongoose.Schema.Types.ObjectId, ref: 'Task' },
         completedAt: { type: Date, default: Date.now }

@@ -9,8 +9,8 @@ const referralController = require('../controllers/referralController');
 router.post('/user/register', userController.registerUser);
 router.post('/user/daily-reward', userController.claimDailyReward);
 router.get('/user/registered-users', userController.getRegisteredUsers);
-router.get('/user/is-registered/:address', userController.isRegistered);
-router.get('/user/getmessageid/:address', userController.getPrePreparedMessageId);
+router.get('/user/is-registered/:telegramId', userController.isRegistered);
+
 // Coin routes
 router.post('/coin/register', coinController.registerCoin);
 router.post('/coin/vote', coinController.vote);
@@ -20,9 +20,9 @@ router.post('/task/complete', taskController.completeTask);
 
 // Referral routes
 router.post('/referral/apply', referralController.applyReferralCode);
-router.get('/referral/stats/:address', referralController.getReferralStats);
+router.get('/referral/stats/:telegramId', referralController.getReferralStats);
 router.get('/referral/leaderboard', referralController.getReferralLeaderboard);
-router.get('/referral/referred-users/:address', referralController.getReferredUsers);
-router.get('/referral/link/:address', referralController.getReferralLink);
+router.get('/referral/referred-users/:telegramId', referralController.getReferredUsers);
+router.get('/referral/link/:telegramId', referralController.getReferralLink);
 
 module.exports = router; 

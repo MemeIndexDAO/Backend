@@ -6,9 +6,9 @@ const REFEREE_REWARD = 2;  // Votes for new user
 
 exports.applyReferralCode = async (req, res) => {
     try {
-        const { address, referralCode } = req.body;
+        const { telegramId, referralCode } = req.body;
 
-        const user = await User.findOne({ address });
+        const user = await User.findOne({ telegramId });
         if (!user) {
             return res.status(404).json({ message: 'User not found' });
         }
@@ -22,7 +22,7 @@ exports.applyReferralCode = async (req, res) => {
             return res.status(404).json({ message: 'Invalid referral code' });
         }
 
-        if (referrer.address === user.address) {
+        if (referrer.telegramId === user.telegramId) {
             return res.status(400).json({ message: 'Cannot use own referral code' });
         }
 
@@ -47,9 +47,9 @@ exports.applyReferralCode = async (req, res) => {
 
 exports.getReferralStats = async (req, res) => {
     try {
-        const { address } = req.params;
+        const { telegramId } = req.params;
 
-        const user = await User.findOne({ address });
+        const user = await User.findOne({ telegramId });
         if (!user) {
             return res.status(404).json({ message: 'User not found' });
         }
@@ -79,17 +79,17 @@ exports.getReferralLeaderboard = async (req, res) => {
 
 exports.getReferredUsers = async (req, res) => {
     try {
-        const { address } = req.params;
+        const { telegramId } = req.params;
 
         // Find all users who were referred by this address
-        const referredUsers = await User.find({ referredBy: address })
-            .select('address username registeredAt -_id')
+        const referredUsers = await User.find({ referredBy: telegramId })
+            .select('telegramId username registeredAt -_id')
             .sort({ registeredAt: -1 }); // Most recent first
 
         res.json({
             count: referredUsers.length,
             referredUsers: referredUsers.map(user => ({
-                address: user.address,
+                telegramId: user.telegramId,
                 username: user.username,
                 joinedAt: user.registeredAt
             }))
@@ -101,16 +101,16 @@ exports.getReferredUsers = async (req, res) => {
 
 exports.getReferralLink = async (req, res) => {
     try {
-        const { address } = req.params;
+        const { telegramId } = req.params;
         
-        const user = await User.findOne({ address });
+        const user = await User.findOne({ telegramId });
         if (!user) {
             return res.status(404).json({ message: 'User not found' });
         }
 
         // Generate bot link with referral code
         const botUsername = process.env.BOT_USERNAME;
-        const botLink = `https://t.me/${botUsername}?start=${user.referralCode}`;
+        const botLink = `https://t.me/${botUsername}/MemeBattleArena?start=${user.referralCode}`;
 
         res.json({
             referralCode: user.referralCode,

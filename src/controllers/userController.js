@@ -1,8 +1,5 @@
 const User = require('../models/User');
 
-const REFERRAL_REWARD = 5; 
-const REFEREE_REWARD = 2; 
-
 exports.getRegisteredUsers = async (req, res) => {
     try {
         const users = await User.find();    
@@ -12,22 +9,10 @@ exports.getRegisteredUsers = async (req, res) => {
     }
 };
 
-exports.getPrePreparedMessageId = async (req, res) => {
-    try {
-        const { address } = req.params;
-        const user = await User.findOne({ address });
-        res.status(200).json({ prePreparedMessageId: user.prePreparedMessageId });  
-    } catch (error) {
-        res.status(500).json({ message: error.message });
-    }
-};
-
-
-
 exports.isRegistered = async (req, res) => {
     try {
-        const address = req.params.address;
-        const user = await User.findOne({ address });
+        const telegramId = (req.params.telegramId);
+        const user = await User.findOne({ telegramId });
         res.status(200).json({ isRegistered: !!user });
     } catch (error) {
         res.status(500).json({ message: error.message });
@@ -36,50 +21,35 @@ exports.isRegistered = async (req, res) => {
 
 exports.registerUser = async (req, res) => {
     try {
-        const { address, username, referralCode, referredBy, prePreparedMessageId } = req.body;
+        const { telegramId, username } = req.body;
         
-        let user = await User.findOne({ address });
+        let user = await User.findOne({ telegramId });
         if (user) {
             return res.status(200).json({
                 message: 'User already exists',
                 user: {
-                    address: user.address,
+                    telegramId: user.telegramId,
                     username: user.username,
                     referralCode: user.referralCode,
                     votesBalance: user.votesBalance,
-                    prePreparedMessageId:user.prePreparedMessageId,
-                    referredBy:user.referredBy
                 }
             });
         }
 
-        user = new User({ address,referralCode, username, prePreparedMessageId, referredBy });
+        user = new User({ 
+            telegramId,
+            username, 
+            referralCode:telegramId, 
+        });
         await user.save();
-
-        // Handle referral if code provided
-        if (referredBy) {
-            const referrer = await User.findOne({ referredBy });
-            if (referrer && referrer.address !== address) {
-                user.referredBy = referrer.address;
-                user.votesBalance += REFEREE_REWARD;
-                
-                referrer.referralCount += 1;
-                referrer.votesBalance += REFERRAL_REWARD;
-                referrer.referralRewardsEarned += REFERRAL_REWARD;
-                
-                await Promise.all([user.save(), referrer.save()]);
-            }
-        }
 
         res.status(201).json({
             message: 'User registered successfully',
             user: {
-                address: user.address,
+                telegramId: user.telegramId,
                 username: user.username,
                 referralCode: user.referralCode,
                 votesBalance: user.votesBalance,
-                prePreparedMessageId:user.prePreparedMessageId,
-                referredBy:user.referredBy
             }
         });
     } catch (error) {
@@ -89,8 +59,8 @@ exports.registerUser = async (req, res) => {
 
 exports.claimDailyReward = async (req, res) => {
     try {
-        const { address } = req.body;
-        const user = await User.findOne({ address });
+        const { telegramId } = req.body;
+        const user = await User.findOne({ telegramId });
 
         if (!user) {
             return res.status(404).json({ message: 'User not found' });

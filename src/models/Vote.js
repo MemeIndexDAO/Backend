@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 
 const voteSchema = new mongoose.Schema({
-    userAddress: { type: String, required: true }, // User address
+    userTelegramId: { type: String, required: true }, // User telegramId
     coinAddress: { type: String, required: true },
     amount: { type: Number, required: true },
 });

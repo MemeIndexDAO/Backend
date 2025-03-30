@@ -22,9 +22,9 @@ exports.registerCoin = async (req, res) => {
 
 exports.vote = async (req, res) => {
     try {
-        const { userAddress, coinAddress, amount } = req.body;
+        const { userTelegramId, coinAddress, amount } = req.body;
         
-        const user = await User.findOne({ address: userAddress });
+        const user = await User.findOne({ telegramId: userTelegramId });
         if (!user || user.votesBalance < amount) {
             return res.status(400).json({ message: 'Insufficient votes' });
         }
@@ -35,7 +35,7 @@ exports.vote = async (req, res) => {
         }
 
         const vote = new Vote({ 
-            userId: userAddress, // Using TON address instead of telegramId
+            userTelegramId: userTelegramId, // Using TON address instead of telegramId
             coinAddress, 
             amount 
         });
