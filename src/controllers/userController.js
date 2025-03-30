@@ -13,7 +13,11 @@ exports.isRegistered = async (req, res) => {
     try {
         const telegramId = (req.params.telegramId);
         const user = await User.findOne({ telegramId });
-        res.status(200).json({ isRegistered: !!user });
+        if(user){
+            res.status(200).json({ isRegistered: true });
+        }else{
+            res.status(200).json({ isRegistered: false });
+        }
     } catch (error) {
         res.status(500).json({ message: error.message });
     }
