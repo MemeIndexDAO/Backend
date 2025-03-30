@@ -31,7 +31,7 @@ exports.applyReferralCode = async (req, res) => {
         referrer.referralRewardsEarned += REFERRAL_REWARD;
         await referrer.save();
 
-        user.referredBy = referrer.address;
+        user.referredBy = referrer.telegramId;
         user.votesBalance += REFEREE_REWARD;
         await user.save();
 
