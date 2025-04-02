@@ -16,7 +16,9 @@ router.post('/coin/register', coinController.registerCoin);
 router.post('/coin/vote', coinController.vote);
 
 // Task routes
+router.get('/tasks/:telegramId', taskController.getUserTasks);
 router.post('/task/complete', taskController.completeTask);
+router.post('/task/verify', taskController.verifyTaskCompletion);
 
 // Referral routes
 router.post('/referral/apply', referralController.applyReferralCode);
