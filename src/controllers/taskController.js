@@ -1,6 +1,34 @@
 const User = require('../models/User');
 const Task = require('../models/Task');
 
+// Create a new task
+exports.createTask = async (req, res) => {
+    try {
+        const { title, description, rewardVotes, isDaily, type, actionUrl } = req.body;
+
+        // Validate required fields
+        if (!title || !description || !type) {
+            return res.status(400).json({ message: 'Missing required fields' });
+        }
+
+        // Create new task
+        const task = new Task({
+            title,
+            description,
+            rewardVotes: rewardVotes || 0,
+            isDaily: isDaily || false,
+            type,
+            actionUrl: actionUrl || ''
+        });
+
+        await task.save();
+        res.status(201).json({ message: 'Task created successfully', task });
+    } catch (error) {
+        console.error('Error creating task:', error);
+        res.status(500).json({ message: 'Server error' });
+    }
+};
+
 // Get all tasks for a user
 exports.getUserTasks = async (req, res) => {
     try {
