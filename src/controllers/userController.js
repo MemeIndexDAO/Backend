@@ -98,6 +98,22 @@ exports.claimDailyReward = async (req, res) => {
     }
 };
 
+exports.updateUser = async (req, res) => {
+    try {
+        const { telegramId,  photo_url } = req.body;
+        
+        const user = await User.findOneAndUpdate({ telegramId },{photo_url:photo_url});
+        if (!user) {
+            return res.status(404).json({ message: 'User not found' });
+        }
+        res.json({
+            message: 'User updated successfully',
+            user: user
+        });
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+}
 // Update user votes
 exports.updateUserVotes = async (req, res) => {
     try {

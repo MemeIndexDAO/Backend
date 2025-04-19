@@ -11,6 +11,7 @@ router.post('/user/daily-reward', userController.claimDailyReward);
 router.get('/user/registered-users', userController.getRegisteredUsers);
 router.get('/user/is-registered/:telegramId', userController.isRegistered);
 router.get('/user/:telegramId', userController.getUser);
+router.post('/user/update-user', userController.updateUser);
 router.post('/user/update-votes', userController.updateUserVotes);
 router.post('/user/update-referral', userController.updateUserReferral);
 router.get('/referral/:telegramId', userController.getReferralLink);
