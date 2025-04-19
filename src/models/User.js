@@ -3,6 +3,7 @@ const mongoose = require('mongoose');
 const userSchema = new mongoose.Schema({
     telegramId: { type: String, required: true, unique: true }, // Primary identifier
     username: { type: String, required: true },
+    photo_url: { type: String }, // Telegram profile photo URL
     votesBalance: { type: Number, default: 0 },
     lastDailyReward: { type: Date },
     referralCode: { type: String, unique: true },

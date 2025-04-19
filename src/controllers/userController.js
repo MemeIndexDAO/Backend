@@ -33,7 +33,7 @@ exports.isRegistered = async (req, res) => {
 
 exports.registerUser = async (req, res) => {
     try {
-        const { telegramId, username } = req.body;
+        const { telegramId, username, photo_url } = req.body;
         
         let user = await User.findOne({ telegramId });
         if (user) {
@@ -42,6 +42,7 @@ exports.registerUser = async (req, res) => {
                 user: {
                     telegramId: user.telegramId,
                     username: user.username,
+                    photo_url: user.photo_url,
                     referralCode: user.referralCode,
                     votesBalance: user.votesBalance,
                 }
@@ -50,8 +51,9 @@ exports.registerUser = async (req, res) => {
 
         user = new User({ 
             telegramId,
-            username, 
-            referralCode:telegramId, 
+            username,
+            photo_url,
+            referralCode: telegramId, 
         });
         await user.save();
 
@@ -60,6 +62,7 @@ exports.registerUser = async (req, res) => {
             user: {
                 telegramId: user.telegramId,
                 username: user.username,
+                photo_url: user.photo_url,
                 referralCode: user.referralCode,
                 votesBalance: user.votesBalance,
             }
