@@ -200,7 +200,7 @@ exports.getReferralStats = async (req, res) => {
         res.json({
             referralCode: user.referralCode,
             totalReferrals: referredUsers.length,
-            referralLink: `https://t.me/your_bot_username?start=${user.referralCode}`,
+            referralLink: `https://t.me/MemeBattleArenaBot?start=${user.referralCode}`,
             referredUsers: referredUsers.map(user => ({
                 telegramId: user.telegramId,
                 username: user.username,
