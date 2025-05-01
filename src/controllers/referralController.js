@@ -1,8 +1,8 @@
 const User = require('../models/User');
 
 // Constants for referral rewards
-const REFERRAL_REWARD = 5; // Votes for referrer
-const REFEREE_REWARD = 2;  // Votes for new user
+const REFERRAL_REWARD = 100; // Votes for referrer
+const REFEREE_REWARD = 25;  // Votes for new user
 
 exports.applyReferralCode = async (req, res) => {
     try {
