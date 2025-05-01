@@ -24,7 +24,6 @@ const taskSchema = new mongoose.Schema({
         type: String,
         required: true,
         enum: ['invite_friends', 'join_bot', 'join_group', 'custom'],
-        unique: true
     },
     actionUrl: {
         type: String,
